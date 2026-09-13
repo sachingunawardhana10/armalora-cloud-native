@@ -25,3 +25,7 @@ func Connect(cfg config.Config) (*pgx.Conn, error) {
 
 	return conn, nil
 }
+
+func HealthCheck(conn *pgx.Conn) error {
+	return conn.Ping(context.Background())
+}

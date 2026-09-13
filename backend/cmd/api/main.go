@@ -32,6 +32,17 @@ func main() {
 		fmt.Fprintln(w, "Welcome to Armalora API")
 	})
 
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		err := database.HealthCheck(db)
+
+		if err != nil {
+			http.Error(w, "Database is unavailable", http.StatusServiceUnavailable)
+			return
+		}
+
+		fmt.Fprintln(w, "Armalora API is healthy")
+	})
+
 	fmt.Println("Armalora API is running on port", cfg.AppPort)
 	fmt.Println("Environment:", cfg.AppEnv)
 
