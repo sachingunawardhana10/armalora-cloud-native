@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sachingunawardhana10/armalora-cloud-native/internal/config"
 )
 
-func Connect(cfg config.Config) (*pgx.Conn, error) {
+func Connect(cfg config.Config) (*pgxpool.Pool, error) {
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s",
 		cfg.DBUser,
@@ -18,14 +18,14 @@ func Connect(cfg config.Config) (*pgx.Conn, error) {
 		cfg.DBName,
 	)
 
-	conn, err := pgx.Connect(context.Background(), dsn)
+	pool, err := pgxpool.New(context.Background(), dsn)
 	if err != nil {
 		return nil, err
 	}
 
-	return conn, nil
+	return pool, nil
 }
 
-func HealthCheck(conn *pgx.Conn) error {
-	return conn.Ping(context.Background())
+func HealthCheck(pool *pgxpool.Pool) error {
+	return pool.Ping(context.Background())
 }

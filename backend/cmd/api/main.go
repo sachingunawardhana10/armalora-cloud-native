@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
@@ -24,7 +23,7 @@ func main() {
 		fmt.Println("Database connection failed:", err)
 		return
 	}
-	defer db.Close(context.Background())
+	defer db.Close()
 
 	fmt.Println("Database connection successful")
 
